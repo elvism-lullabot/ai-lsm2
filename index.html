@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>How Bad Is This Ticket? — Analyzer</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="container">
+    <h1>How Bad Is This Ticket?</h1>
+    <p class="sub">Paste a support ticket. Get severity, urgency, first reply, emoji, and a panic meter.</p>
+  </header>
+
+  <main class="container grid">
+    <section class="card">
+      <h2>Ticket</h2>
+      <label class="label" for="ticket">Ticket description</label>
+      <textarea id="ticket" rows="10" placeholder="Example: Checkout is down for all users since 10:05 AM. We see 500 errors in production. CEO is asking for an ETA."></textarea>
+
+      <div class="row">
+        <button id="analyzeBtn" class="btn">Analyze</button>
+        <button id="clearBtn" class="btn secondary">Clear</button>
+      </div>
+
+      <details class="details">
+        <summary>AI Mode (optional)</summary>
+        <p class="hint">
+          Use your OpenAI API key to get smarter results. Stored locally in your browser (<code>localStorage</code>).
+          Never commit keys to GitHub Pages.
+        </p>
+
+        <label class="label" for="apiKey">OpenAI API key</label>
+        <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+
+        <div class="row">
+          <label class="checkbox">
+            <input id="useAi" type="checkbox" />
+            Use AI mode (OpenAI)
+          </label>
+
+          <select id="model" title="Model">
+            <option value="gpt-5-mini">gpt-5-mini</option>
+            <option value="gpt-5">gpt-5</option>
+          </select>
+
+          <button id="saveKeyBtn" class="btn secondary">Save key</button>
+        </div>
+
+        <p class="hint small">
+          This uses the OpenAI <code>/v1/responses</code> endpoint. :contentReference[oaicite:1]{index=1}
+        </p>
+      </details>
+
+      <p id="status" class="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>Result</h2>
+
+      <div class="resultGrid">
+        <div class="resultItem">
+          <div class="k">Severity</div>
+          <div id="severity" class="v">—</div>
+        </div>
+
+        <div class="resultItem">
+          <div class="k">Urgency</div>
+          <div id="urgency" class="v">—</div>
+        </div>
+
+        <div class="resultItem">
+          <div class="k">Mood</div>
+          <div id="emoji" class="v">—</div>
+        </div>
+      </div>
+
+      <div class="meterWrap">
+        <div class="k">Panic meter</div>
+        <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="meterBar" class="meterBar" style="width:0%"></div>
+        </div>
+        <div id="meterLabel" class="meterLabel">0 / 100</div>
+      </div>
+
+      <div class="block">
+        <div class="k">Suggested first reply</div>
+        <div id="reply" class="reply">—</div>
+      </div>
+
+      <div class="block">
+        <div class="k">Notes</div>
+        <div id="notes" class="notes">—</div>
+      </div>
+    </section>
+
+    <footer class="container footer">
+      <p>
+        Tip: For a secure production version, use a tiny serverless proxy so keys stay off the client.
+      </p>
+    </footer>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
